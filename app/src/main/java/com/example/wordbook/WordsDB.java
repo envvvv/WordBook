@@ -49,6 +49,22 @@ public class WordsDB {
 
     }
 
+    public Words.WordDescription getSingleWordbyName(String word) {
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String sql = "select * from words where word=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{word});
+        if (cursor.moveToNext()) {
+            Words.WordDescription item = new Words.WordDescription(cursor.getString(cursor.getColumnIndex(Words.Word._ID)),
+                    cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD)),
+                    cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING)),
+                    cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE)));
+            return item;
+        }
+        return null;
+
+    }
+
     //得到全部单词列表
     public ArrayList<Map<String, String>> getAllWords() {
         if (mDbHelper == null) {

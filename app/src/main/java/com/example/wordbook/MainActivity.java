@@ -3,9 +3,12 @@ package com.example.wordbook;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,12 +28,14 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     private static final String TAG = "myTag";
     private WordsDBHelper m;
     WordItemFragment wordItemFragment = new WordItemFragment();
+    private ContentResolver resolver;
+    Uri newUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getSupportFragmentManager().beginTransaction().add(R.id.wordslist,wordItemFragment).commit();
+        resolver= this.getContentResolver();
     }
 
 
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         return true;
     }
 
+
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
@@ -51,16 +57,19 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
             case R.id.add:
                 //查找
                 InsertDialog();
-                return true;
+                break;
             case R.id.find:
                 //新增单词
                 SearchDialog();
-                return true;
+                break;
         }
 
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
 
     private void InsertDialog() {
@@ -106,9 +115,8 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         });
         builder.create().show();
 
-
-
     }
+
 
     private void RefreshWordItemFragment() {
         wordItemFragment.refreshWordsList();
@@ -178,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                           builder.create().show();
 
     }
+
 
     @Override
     public void onUpdateDialog(String strId) {

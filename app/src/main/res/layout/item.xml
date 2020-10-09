@@ -15,5 +15,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewWord"
-        android:textSize="@dimen/abc_text_size_title_material" />
+        android:textSize="30dp" />
 </LinearLayout>
